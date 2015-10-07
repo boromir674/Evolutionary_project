@@ -1,6 +1,10 @@
 import org.vu.contest.ContestSubmission;
 import org.vu.contest.ContestEvaluation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Random;
 import java.util.Properties;
 
@@ -16,11 +20,32 @@ public class player7 implements ContestSubmission
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("From main");
-		double f = 10 - 10*( ( 20-0) / 11.5356 ) ;
-		System.out.println(f);
+
+		player7 ap = new player7();
+		SphereEvaluation as = new SphereEvaluation();
+		RastriginEvaluation re = new RastriginEvaluation();
+		FletcherPowellEvaluation fe = new FletcherPowellEvaluation();
+		ap.setSeed(1);
+		ap.setEvaluation(as);
+
+		int pop_size = 10;
+		double init_sigma = 0.1;//Math.sqrt(2);
+		Population pop = new Population(pop_size, 10, 1, init_sigma, ap.rnd_);
+
+		int evals = 0;
+		while(evals < 10000){
+			// Select parents
+			// Apply variation operators and get children
+			//	double child[] = ...
+			pop.rankingSelection(7*pop_size);
+			pop.mutationStep();
+			evals++;
+			System.out.println(evals);
+			pop.mCommaLSurvivorSelection();
+		}
+
 	}
+
 	public void setSeed(long seed)
 	{
 		// Set seed of algortihms random process
@@ -50,25 +75,30 @@ public class player7 implements ContestSubmission
 	public void run()
 	{
 		System.out.println("From run");
-		
+
 		// Run your algorithm here
 		// Initialize population
-		int pop_size = 1000;
+		int pop_size = 100;
 		double init_sigma = Math.sqrt(2);
-		Population pop = new Population(pop_size, 1, init_sigma, this.rnd_);
-		
+		//Population pop = new Population(pop_size, 1, init_sigma, this.rnd_);
+
 		int evals = 0;
-		while(evals<evaluations_limit_){
+		while(evals < evaluations_limit_){
 			// Select parents
 			// Apply variation operators and get children
 			//	double child[] = ...
-			for (int i=0; i<pop_size; i++){
-				Double fitness = (Double) evaluation_.evaluate(pop.getX(i));
-				//System.out.println(fitness);
+			//pop.mutate();
+			for (int i=0; i < pop_size; i++){
+				//Double fitness1 = (Double) evaluation_.evaluate(pop.getX(i));
+				//Double fitness2 = (Double) evaluation_.evaluate(pop.getXChildren(i));
+				//pop.setCurrentFitness(i, fitness1);
+				//pop.setChildrenFitness(i, fitness2);
+
 			}
-			pop.mutate();
-			
+
+			//pop.selectSurvivors();
 			evals++;
+			System.out.println(evals);
 			// Select survivors
 		}
 	}
